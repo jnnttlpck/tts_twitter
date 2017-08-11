@@ -11,6 +11,9 @@ class EpicenterController < ApplicationController
       end
   end
 
+  def all_users
+    @users = User.all
+  end
 
   def tag_tweets
     @tag = Tag.find(params[:id])
@@ -37,4 +40,30 @@ class EpicenterController < ApplicationController
     redirect_to show_user_path(id: params[:id])
   end
 
+  # @following = current_user.following.all
+  # above doesn't work b/c we need to grabbing user objects
+  # folliwng array only stores ids, so we need to create a new array so we can display usernames
+  def following
+    @user = User.find(params[:id])
+    @users = []
+    User.all.each do |user|
+      if @user.following.include?(user.id)
+        @users.push(user)
+      end
+    end
+  end
+
+  def followers
+    @user = User.find(params[:id])
+    @users = []
+    User.all.each do |user|
+      if user.following.include?(@user.id)
+        @users.push(user)
+      end
+    end
+  end
+
+  def show_comments
+    @comments = User.comment
+  end
 end

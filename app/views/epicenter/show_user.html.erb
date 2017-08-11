@@ -5,19 +5,33 @@
 <p><%= @user.bio %></p>
 
 <p>
-    <% if current_user.following.include?(@user.id) %>
-        <%= link_to "Unfollow", unfollow_path(id: @user.id), class: "btn btn-danger" %>
-    <% else %>
-    <% if current_user.id != @user.id %>
-        <%= link_to "Follow", now_following_path(id: @user.id), class: "btn btn-primary" %>
-    <% end %>
-    <% end %>
+  <% if current_user.following.include?(@user.id) %>
+  <%= link_to "Following", unfollow_path(id: @user.id), class: "btn btn-primary unfollow_btn" %>
+  <% else %>
+  <% if current_user.id != @user.id %>
+  <%= link_to "Follow", now_following_path(id: @user.id), class: "btn btn-primary" %>
+  <% end %>
+  <% end %>
 </p>
 
 
 <% @user.tweets.each do |tweet| %>
-    <div>
-        <p>@<%= @user.username %></p>
-	<p><%= tweet.message.html_safe %></p>
-    </div>
+<div>
+  <p>@<%= @user.username %></p>
+  <p><%= tweet.message.html_safe %></p>
+</div>
 <% end %>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.unfollow_btn').hover(function(){
+    $(this).removeClass('btn-primary');
+    $(this).addClass('btn-danger');
+    $(this).html("Unfollow");
+  }, function(){
+    $(this).html("Following");
+    $(this).removeClass('btn-danger');
+    $(this).addClass('btn-primary');
+  });
+})
+</script>
